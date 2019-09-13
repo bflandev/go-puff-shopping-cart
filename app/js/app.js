@@ -2,15 +2,25 @@ const cartBtn = document.querySelector('.cart-btn');
 const cartCloseBtn = document.querySelector('.close-cart-btn');
 const cartDom = document.querySelector('.cart');
 const cartOverlayDom = document.querySelector('.cart-overlay');
-class CartService {
-    async getCart() {
+class Http {
+    async get(url) {
         try {
-            let result = await fetch('https://gopuff-public.s3.amazonaws.com/dev-assignments/product/order.json');
+            let result = await fetch(url);
             return await result.json();
         } catch (error) {
             console.log(error);
         }
     }
+}
+
+class Store {
+    static save(item) {
+        localStorage.setItem(`${item}`, JSON.stringify(item));
+    }
+    static get(item) {
+        return JSON.parse(localStorage.getItem(`${item}`));
+    }
+
 }
 
 class UI {
@@ -34,11 +44,14 @@ class UI {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const cartService = new CartService();
+    const http = new Http();
     const ui = new UI();
 
     ui.bootstrap();
-    cartService.getCart().then(cart => {
-        console.log(cart);
-    });
-})
+    http.get('https://gopuff-public.s3.amazonaws.com/dev-assignments/product/order.json').then(cart => {
+        Store.save(cart);
+    }).then(() => {
+
+    })
+
+});
