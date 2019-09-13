@@ -91,6 +91,17 @@
   transform: translateX(100%);
 }
 
+.show-overlay {
+  visibility: visible;
+}
+
 .cart-open {
   transform: translateX(0);
+}
+
+.close-cart-btn {
+  background: var(--primary-color);
+  color: var(--main-white);
+  width: 100px;
+  height: 40px;
 }
