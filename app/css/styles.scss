@@ -36,6 +36,10 @@ body {
   img {
     height: 100%;
   }
+  input {
+    font-size: 1.5rem;
+    border-radius: 6px;
+  }
 }
 
 .products {
@@ -103,7 +107,7 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  width: 20vw;
+  width: 50vw;
   height: 100%;
   overflow: scroll;
   background: var(--main-white);
