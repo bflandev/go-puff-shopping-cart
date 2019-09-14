@@ -23,6 +23,43 @@ class CartService {
 
     }
 
+    getCart(ui, http) {
+        const cartPromise = http.get('https://gopuff-public.s3.amazonaws.com/dev-assignments/product/order.json').then(cartRes => {
+            return cartRes.cart.products.map(product => {
+
+
+                return {
+                    id: product.product_id,
+                    quantity: product.quantity,
+                    price: product.price,
+                    coupon: product.credit_coupon_price
+                }
+            });
+
+
+        });
+
+        Promise.all([cartPromise]).then(values => {
+            const prodDescPromises = [];
+            values[0].forEach(cartItem => {
+                prodDescPromises.push(http.get(`https://prodcat.gopuff.com/api/products?location_id=-1&product_id=${cartItem.id}`));
+
+            })
+
+            Promise.all(prodDescPromises).then(descriptions => {
+                let cartItems = values[0].map(v => {
+                    const product = descriptions.find(d => d.products[0].product_id === v.id);
+                    return { ...v, name: product.products[0].name, url: product.products[0].images[0].thumb };
+                })
+                ui.populateCart(cartItems, this.calculateCart(values[0]));
+                Store.save('cart', values[0]);
+            })
+
+
+        })
+
+    }
+
 }
 
 class Http {
@@ -76,9 +113,10 @@ class UI {
             div.innerHTML =
                 `<img src="${item.url}" />
             <div>
-              <h4>${item.name}</h4>
-              <h5>quanity: ${item.quantity}</h5>
-              <h6>$${item.price}</h6>
+              <h1>${item.name}</h1>
+              <h2>Quanity: ${item.quantity}</h2>
+              <h3>Price $${item.price}</h3>
+              <h4>Sale Price: $${item.coupon}</h4>
               <button class="cart-remove-btn">Remove</button>
             </div>`;
             cartContainer.appendChild(div);
@@ -87,25 +125,14 @@ class UI {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const http = new Http();
     const ui = new UI();
     const cartService = new CartService();
+    const http = new Http();
 
     ui.bootstrap();
-    http.get('https://gopuff-public.s3.amazonaws.com/dev-assignments/product/order.json').then(cartRes => {
-        let items = cartRes.cart.products.map(product => {
-            return {
+    cartService.getCart(ui, http);
 
-                id: product.product_id,
-                quantity: product.quantity,
-                price: product.price,
-                coupon: product.credit_coupon_price
-            }
-        });
 
-        ui.populateCart(items, cartService.calculateCart(items));
-        Store.save('cart', items);
-    });
 
 
 });
