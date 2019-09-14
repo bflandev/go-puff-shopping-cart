@@ -1,3 +1,4 @@
+@import url(https://cloud.typography.com/6563836/7533992/css/fonts.css);
 :root {
   --primary-color: rgb(0, 179, 238);
   --main-spacing: 0.1rem;
@@ -8,6 +9,11 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+body {
+  font-family: 'Roboto', 'Varela Round', 'Lucida Grande', Helvetica, Arial,
+    sans-serif;
 }
 
 .top-nav {
@@ -73,7 +79,7 @@
   height: 100%;
   background: transparent;
   transition: var(--main-transition);
-  background: var(--primary-color);
+
   z-index: 2;
   visibility: hidden;
 }
@@ -82,15 +88,56 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 90vw;
+  width: 20vw;
   height: 100%;
   overflow: scroll;
   background: var(--main-white);
   padding: 1.5rem;
   transition: var(--main-transition);
   transform: translateX(100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: dotted var(--primary-color) 1px;
 }
-
+.cart-container {
+  margin-top: 1rem;
+}
+.cart-item {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+  img {
+    width: 100px;
+    height: auto;
+  }
+  h1 {
+    font-size: 0.9rem;
+  }
+  h2 {
+    font-size: 0.7rem;
+  }
+  h3 {
+    font-size: 0.7rem;
+    text-decoration: line-through;
+  }
+  h4 {
+    font-size: 0.9rem;
+    color: red;
+  }
+}
+.cart-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  margin: auto;
+}
 .show-overlay {
   visibility: visible;
 }
@@ -102,6 +149,23 @@
 .close-cart-btn {
   background: var(--primary-color);
   color: var(--main-white);
-  width: 100px;
-  height: 40px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.cart-remove-btn {
+  background: var(--primary-color);
+  color: var(--main-white);
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.cart-checkout-btn {
+  background: var(--primary-color);
+  color: var(--main-white);
+  padding: 0.5rem;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 1rem;
 }

@@ -51,8 +51,8 @@ class CartService {
                     const product = descriptions.find(d => d.products[0].product_id === v.id);
                     return { ...v, name: product.products[0].name, url: product.products[0].images[0].thumb };
                 })
-                ui.populateCart(cartItems, this.calculateCart(values[0]));
-                Store.save('cart', values[0]);
+                ui.populateCart(cartItems, this.calculateCart(cartItems));
+                Store.save('cart', cartItems);
             })
 
 
@@ -112,13 +112,13 @@ class UI {
             div.setAttribute('data-id', item.id);
             div.innerHTML =
                 `<img src="${item.url}" />
-            <div>
+            
               <h1>${item.name}</h1>
               <h2>Quanity: ${item.quantity}</h2>
               <h3>Price $${item.price}</h3>
               <h4>Sale Price: $${item.coupon}</h4>
               <button class="cart-remove-btn">Remove</button>
-            </div>`;
+            `;
             cartContainer.appendChild(div);
         });
     }
@@ -128,11 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const ui = new UI();
     const cartService = new CartService();
     const http = new Http();
-
     ui.bootstrap();
     cartService.getCart(ui, http);
-
-
-
-
 });
