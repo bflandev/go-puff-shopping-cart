@@ -69,7 +69,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  widows: 100%;
+  width: 100%;
   height: 100%;
   background: transparent;
   transition: var(--main-transition);
@@ -82,7 +82,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 250px;
+  width: 90vw;
   height: 100%;
   overflow: scroll;
   background: var(--main-white);
