@@ -7,39 +7,28 @@ const total = document.querySelector('.total');
 const savings = document.querySelector('.savings');
 
 class CartService {
-    static calculateCart(cartItems) {
-        let totalCost = 10;
+    calculateCart(cartItems) {
+        console.log('items#', cartItems);
+        let totalCost = 0;
         let totalItems = 0;
         let totalSavings = 0;
+
+        console.log(cartItems.length)
+
+        Array.from(cartItems).forEach(item => {
+            totalItems += item.quantity;
+            totalCost += parseFloat((item.coupon * item.quantity).toFixed());
+            totalSavings += parseFloat((item.price - item.coupon).toFixed());
+        });
 
         return { totalCost, totalItems, totalSavings };
 
     }
 
-    static createCart(cart, http) {
+    async createCart(cart) {
         let cartItems = [];
-        cart.products.map(product => {
-
-            http.get(`https://prodcat.gopuff.com/api/products?location_id=-1&product_id=${product.product_id}`).then(productsRes => {
-
-                let prodDetails = productsRes.products[0];
-                let cartItem = {
-                    id: product.product_id,
-                    quantity: product.quantity,
-                    price: product.price,
-                    coupon: product.credit_coupon_price,
-                    name: prodDetails.name,
-                    thumbnail: prodDetails.images[0].thumb
-
-                };
-
-                cartItems.push(cartItem)
-            });
 
 
-
-
-        });
         console.log(cartItems);
         return cartItems
     }
@@ -84,9 +73,8 @@ class UI {
         cartDom.classList.remove('cart-open');
         cartOverlayDom.classList.remove('show-overlay');
     }
-    populateCart(cartItems) {
+    populateCart(totals) {
 
-        const totals = CartService.calculateCart(cartItems);
         items.appendChild(document.createTextNode(`${totals.totalItems} item(s)`));
         total.appendChild(document.createTextNode(`$${totals.totalCost}`));
         savings.appendChild(document.createTextNode(`$${totals.totalSavings}`));
@@ -96,12 +84,27 @@ class UI {
 document.addEventListener("DOMContentLoaded", () => {
     const http = new Http();
     const ui = new UI();
+    const cartService = new CartService();
+    let cartItems = [];
 
     ui.bootstrap();
     http.get('https://gopuff-public.s3.amazonaws.com/dev-assignments/product/order.json').then(cartRes => {
-        const cart = CartService.createCart(cartRes.cart, http);
-        ui.populateCart(cart);
+        let items = cartRes.cart.products.map(product => {
+            return {
+
+                id: product.product_id,
+                quantity: product.quantity,
+                price: product.price,
+                coupon: product.credit_coupon_price
+
+
+            }
+        });
+
+        ui.populateCart(cartService.calculateCart(items));
+
 
     });
+
 
 });
