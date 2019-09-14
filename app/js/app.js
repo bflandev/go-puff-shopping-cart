@@ -1,6 +1,7 @@
 const cartBtn = document.querySelector('.cart-btn');
 const cartCloseBtn = document.querySelector('.close-cart-btn');
 const cartDom = document.querySelector('.cart');
+const cartContainer = document.querySelector('.cart-container');
 const cartOverlayDom = document.querySelector('.cart-overlay');
 const items = document.querySelector('.items');
 const total = document.querySelector('.total');
@@ -73,11 +74,23 @@ class UI {
         cartDom.classList.remove('cart-open');
         cartOverlayDom.classList.remove('show-overlay');
     }
-    populateCart(totals) {
+    populateCart(cartItems, totals) {
 
         items.appendChild(document.createTextNode(`${totals.totalItems} item(s)`));
         total.appendChild(document.createTextNode(`$${totals.totalCost}`));
         savings.appendChild(document.createTextNode(`$${totals.totalSavings}`));
+        cartItems.forEach(item => {
+            const div = document.createElement("div");
+            div.classList.add('cart-item');
+            div.innerHTML =
+                `<img src="${item.url}" />
+            <div>
+              <h4>AwesomeJuice</h4>
+              <h5>$${item.price}</h5>
+              <button class="cart-remove-btn">Remove</button>
+            </div>`;
+            cartContainer.appendChild(div);
+        });
     }
 }
 
@@ -85,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const http = new Http();
     const ui = new UI();
     const cartService = new CartService();
-    let cartItems = [];
 
     ui.bootstrap();
     http.get('https://gopuff-public.s3.amazonaws.com/dev-assignments/product/order.json').then(cartRes => {
@@ -96,12 +108,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 quantity: product.quantity,
                 price: product.price,
                 coupon: product.credit_coupon_price
-
-
             }
         });
 
-        ui.populateCart(cartService.calculateCart(items));
+        ui.populateCart(items, cartService.calculateCart(items));
 
 
     });
