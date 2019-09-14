@@ -9,12 +9,9 @@ const savings = document.querySelector('.savings');
 
 class CartService {
     calculateCart(cartItems) {
-        console.log('items#', cartItems);
         let totalCost = 0;
         let totalItems = 0;
         let totalSavings = 0;
-
-        console.log(cartItems.length)
 
         Array.from(cartItems).forEach(item => {
             totalItems += item.quantity;
@@ -26,13 +23,6 @@ class CartService {
 
     }
 
-    async createCart(cart) {
-        let cartItems = [];
-
-
-        console.log(cartItems);
-        return cartItems
-    }
 }
 
 class Http {
@@ -77,16 +67,18 @@ class UI {
     populateCart(cartItems, totals) {
 
         items.appendChild(document.createTextNode(`${totals.totalItems} item(s)`));
-        total.appendChild(document.createTextNode(`$${totals.totalCost}`));
-        savings.appendChild(document.createTextNode(`$${totals.totalSavings}`));
+        total.appendChild(document.createTextNode(`Subtotal: $${totals.totalCost}`));
+        savings.appendChild(document.createTextNode(`Discount: $${totals.totalSavings}`));
         cartItems.forEach(item => {
             const div = document.createElement("div");
             div.classList.add('cart-item');
+            div.setAttribute('data-id', item.id);
             div.innerHTML =
                 `<img src="${item.url}" />
             <div>
-              <h4>AwesomeJuice</h4>
-              <h5>$${item.price}</h5>
+              <h4>${item.name}</h4>
+              <h5>quanity: ${item.quantity}</h5>
+              <h6>$${item.price}</h6>
               <button class="cart-remove-btn">Remove</button>
             </div>`;
             cartContainer.appendChild(div);
@@ -112,8 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         ui.populateCart(items, cartService.calculateCart(items));
-
-
+        Store.save('cart', items);
     });
 
 
