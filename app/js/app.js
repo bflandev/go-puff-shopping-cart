@@ -1,4 +1,4 @@
-const cartBtn = document.querySelector('.cart-btn');
+const cartBtn = document.querySelector('.show-cart-btn');
 const cartCloseBtn = document.querySelector('.close-cart-btn');
 const cartDom = document.querySelector('.cart');
 const cartContainer = document.querySelector('.cart-container');
@@ -6,6 +6,7 @@ const cartOverlayDom = document.querySelector('.cart-overlay');
 const items = document.querySelector('.items');
 const total = document.querySelector('.total');
 const savings = document.querySelector('.savings');
+const productsDom = document.querySelector('.product-cards');
 
 class CartService {
     calculateCart(cartItems) {
@@ -26,8 +27,6 @@ class CartService {
     getCart(ui, http) {
         const cartPromise = http.get('https://gopuff-public.s3.amazonaws.com/dev-assignments/product/order.json').then(cartRes => {
             return cartRes.cart.products.map(product => {
-
-
                 return {
                     id: product.product_id,
                     quantity: product.quantity,
@@ -35,8 +34,6 @@ class CartService {
                     coupon: product.credit_coupon_price
                 }
             });
-
-
         });
 
         Promise.all([cartPromise]).then(values => {
@@ -53,13 +50,10 @@ class CartService {
                 })
                 ui.populateCart(cartItems, this.calculateCart(cartItems));
                 Store.save('cart', cartItems);
+                Store.save('product-descriptions', descriptions);
             })
-
-
         })
-
     }
-
 }
 
 class Http {
@@ -122,6 +116,26 @@ class UI {
             cartContainer.appendChild(div);
         });
     }
+
+    populateProducts() {
+        const products = Store.get('product-descriptions');
+
+        products.forEach(product => {
+            const image = product.products[0].images[0].thumb;
+            const price = product.products[0].price;
+            const name = product.products[0].name;
+            const div = document.createElement("div");
+            div.classList.add("card");
+            div.setAttribute("data-id", 1)
+            div.innerHTML = `
+            <img src="${image}" />
+            <span>${price}</span>
+            <span>${name}</span>
+            <button class="cart-btn">Add</button>
+            `
+            productsDom.appendChild(div);
+        })
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -130,4 +144,5 @@ document.addEventListener("DOMContentLoaded", () => {
     const http = new Http();
     ui.bootstrap();
     cartService.getCart(ui, http);
+    ui.populateProducts();
 });
