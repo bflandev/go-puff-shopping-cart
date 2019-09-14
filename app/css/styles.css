@@ -45,6 +45,7 @@ body {
   transition: var(--main-transition);
   padding: 0.5rem;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 .top-nav img {
@@ -108,6 +109,7 @@ body {
   height: 25px;
   -webkit-transition: var(--main-transition);
   transition: var(--main-transition);
+  cursor: pointer;
 }
 
 .products .cart-btn:hover {
@@ -136,7 +138,7 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  width: 50vw;
+  width: 25vw;
   height: 100%;
   overflow: scroll;
   background: var(--main-white);
@@ -233,6 +235,10 @@ body {
   color: var(--main-white);
   width: 100%;
   font-size: 1rem;
+  text-align: left;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .cart-remove-btn {
@@ -241,6 +247,7 @@ body {
   padding: 0.5rem;
   border-radius: 5px;
   margin-top: 1rem;
+  cursor: pointer;
 }
 
 .cart-checkout-btn {
@@ -250,5 +257,6 @@ body {
   border-radius: 5px;
   width: 100%;
   margin-top: 1rem;
+  cursor: pointer;
 }
 /*# sourceMappingURL=styles.css.map */
