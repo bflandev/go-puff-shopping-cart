@@ -66,9 +66,6 @@ body {
   grid-row-gap: 2rem;
   -ms-grid-columns: (220px)[auto-fit];
       grid-template-columns: repeat(auto-fit, 220px);
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 .products .card {
@@ -82,12 +79,13 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  min-height: 320px;
 }
 
 .products .card img {
@@ -109,6 +107,11 @@ body {
 
 .products .cart-btn:hover {
   opacity: 0.5;
+}
+
+.products .product-desc {
+  max-height: 40px;
+  font-size: 1rem;
 }
 
 .cart-overlay {

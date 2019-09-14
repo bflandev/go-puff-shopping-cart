@@ -129,8 +129,9 @@ class UI {
             div.setAttribute("data-id", 1)
             div.innerHTML = `
             <img src="${image}" />
+            <span class="produc-desc">${name}</span>
             <span>${price}</span>
-            <span>${name}</span>
+            
             <button class="cart-btn">Add</button>
             `
             productsDom.appendChild(div);

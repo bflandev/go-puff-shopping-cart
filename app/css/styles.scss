@@ -49,7 +49,6 @@ body {
     grid-column-gap: 0.5rem;
     grid-row-gap: 2rem;
     grid-template-columns: repeat(auto-fit, 220px);
-    align-items: center;
   }
 
   .card {
@@ -57,8 +56,9 @@ body {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    min-height: 320px;
   }
 
   .card img {
@@ -80,6 +80,11 @@ body {
   .cart-btn:hover {
     opacity: 0.5;
   }
+
+  .product-desc {
+    max-height: 40px;
+    font-size: 1rem;
+  }
 }
 
 .cart-overlay {
@@ -90,7 +95,6 @@ body {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   transition: var(--main-transition);
-
   z-index: 2;
   visibility: hidden;
 }
